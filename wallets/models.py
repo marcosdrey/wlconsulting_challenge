@@ -16,13 +16,13 @@ class Wallet(models.Model):
 class Transaction(models.Model):
     sender = models.ForeignKey(
         User,
-        on_delete=models.DO_NOTHING,
+        on_delete=models.CASCADE,
         related_name="sent_transactions",
         verbose_name="Remetente"
     )
     receiver = models.ForeignKey(
         User,
-        on_delete=models.DO_NOTHING,
+        on_delete=models.CASCADE,
         related_name="received_transactions",
         verbose_name="Destinatário"
     )
