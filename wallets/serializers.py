@@ -7,6 +7,11 @@ class WalletSerializer(serializers.ModelSerializer):
         model = Wallet
         fields = '__all__'
 
+    def validate_balance(self, value):
+        if value < 0:
+            raise serializers.ValidationError("O saldo não pode ser negativo.")
+        return value
+
 
 class TransactionSerializer(serializers.ModelSerializer):
     class Meta:
