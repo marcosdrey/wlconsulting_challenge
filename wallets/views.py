@@ -1,30 +1,19 @@
-from django.shortcuts import get_object_or_404
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework import status
-from .models import Wallet
-from .serializers import WalletSerializer
+from rest_framework.viewsets import ModelViewSet
+from .models import Wallet, Transaction
+from .serializers import WalletSerializer, TransactionSerializer
 
 
-class UserWalletView(APIView):
+class UserWalletViewset(ModelViewSet):
+    queryset = Wallet.objects.all()
+    serializer_class = WalletSerializer
+    http_method_names = ['get', 'put', 'patch', 'delete']
 
-    def get(self, request, *args, **kwargs):
-        wallet = get_object_or_404(Wallet, user=request.user)
-        serializer = WalletSerializer(wallet)
-        return Response(serializer.data, status=status.HTTP_200_OK)
 
-    def patch(self, request, *args, **kwargs):
-        wallet = get_object_or_404(Wallet, user=request.user)
-        serializer = WalletSerializer(wallet, data=request.data, partial=True)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-    def put(self, request, *args, **kwargs):
-        wallet = get_object_or_404(Wallet, user=request.user)
-        serializer = WalletSerializer(wallet, data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+class TransactionViewset(ModelViewSet):
+    queryset = Transaction.objects.all()
+    serializer_class = TransactionSerializer
+    filterset_fields = {
+        'created_at': ['gte', 'lte', 'exact'],
+        'sender': ['exact'],
+        'receiver': ['exact']
+    }
