@@ -16,7 +16,6 @@ class Command(BaseCommand):
         for n in range(QT_USERS_TO_BE_CREATED):
             self.__create_user_and_add_wallet_balance(n)
 
-
         self.stdout.write(
             self.style.NOTICE("Criando transferências...")
         )
@@ -34,7 +33,6 @@ class Command(BaseCommand):
         self.stdout.write(
             self.style.SUCCESS("Usuários, carteiras e transferências criados com sucesso!")
         )
-
 
     @staticmethod
     def __create_user_and_add_wallet_balance(n):
